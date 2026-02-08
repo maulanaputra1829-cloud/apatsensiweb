@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Sensitivity TikTok-Style</title>
+<style>
+body, html {
+  margin:0; padding:0;
+  font-family: Arial, sans-serif;
+  background:#0e0e0e;
+  color:#fff;
+  overflow-x:hidden;
+}
+header {
+  position:fixed;
+  top:0; left:0; right:0;
+  background:#1f1f1f;
+  padding:15px;
+  z-index:100;
+  text-align:center;
+}
+header h1 { margin:0; color:#ffcc00; font-size:18px; }
+header p { margin:0; color:#ccc; font-size:12px; }
+.container {
+  padding-top:90px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+select {
+  width:90%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:8px;
+  border:none;
+  background:#222;
+  color:#fff;
+  font-size:16px;
+}
+.card {
+  width:90%;
+  min-height:400px;
+  margin:15px 0;
+  background:#1f1f1f;
+  border-radius:15px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  font-size:20px;
+  font-weight:bold;
+  position:relative;
+  box-shadow:0 5px 15px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.card span { margin-bottom:20px; }
+.card button {
+  background:#ffcc00;
+  border:none;
+  padding:10px 20px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s;
+}
+.card button:hover { background:#ffaa00; }
+/* Card colors */
+.General { border-left:6px solid #ffffff; }
+.RedDot { border-left:6px solid #ff4d4d; }
+.TwoX { border-left:6px solid #4da6ff; }
+.FourX { border-left:6px solid #4dff88; }
+.Sniper { border-left:6px solid #ff4da6; }
+.FreeLook { border-left:6px solid #ffff4d; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Game Sensitivity Finder</h1>
+<p>Scroll seperti TikTok, pilih HP & Scope</p>
+<select id="hpSelect">
+  <option value="all">All HP</option>
+  <option value="iPhone13">iPhone 13</option>
+  <option value="iPhone11">iPhone 11</option>
+  <option value="GalaxyS22">Samsung Galaxy S22</option>
+  <option value="XiaomiRedmiNote10">Xiaomi Redmi Note 10</option>
+</select>
+<select id="scopeSelect">
+  <option value="General">General</option>
+  <option value="RedDot">Red Dot</option>
+  <option value="TwoX">2x Scope</option>
+  <option value="FourX">4x Scope</option>
+  <option value="Sniper">Sniper Scope</option>
+  <option value="FreeLook">Free Look</option>
+</select>
+</header>
+
+<div class="container" id="cardContainer">
+  <!-- Cards akan muncul di sini -->
+</div>
+
+<script>
+// Data sensi
+const sensiData = [
+  {hp:"all", scope:"General", value:"90–95"},
+  {hp:"all", scope:"RedDot", value:"95–100"},
+  {hp:"all", scope:"TwoX", value:"90–95"},
+  {hp:"all", scope:"FourX", value:"85–90"},
+  {hp:"all", scope:"Sniper", value:"75–80"},
+  {hp:"all", scope:"FreeLook", value:"95–100"},
+
+  {hp:"iPhone13", scope:"General", value:"92–95"},
+  {hp:"iPhone13", scope:"RedDot", value:"97"},
+  {hp:"iPhone13", scope:"TwoX", value:"92"},
+  {hp:"iPhone13", scope:"FourX", value:"87"},
+  {hp:"iPhone13", scope:"Sniper", value:"78"},
+  {hp:"iPhone13", scope:"FreeLook", value:"98"},
+
+  {hp:"iPhone11", scope:"General", value:"91–94"},
+  {hp:"GalaxyS22", scope:"FourX", value:"88"},
+  {hp:"XiaomiRedmiNote10", scope:"Sniper", value:"78"},
+];
+
+const hpSelect = document.getElementById('hpSelect');
+const scopeSelect = document.getElementById('scopeSelect');
+const cardContainer = document.getElementById('cardContainer');
+
+function updateCards(){
+  const hp = hpSelect.value;
+  const scope = scopeSelect.value;
+  cardContainer.innerHTML = "";
+  const filtered = sensiData.filter(item => (item.hp===hp && item.scope===scope) || (item.hp==="all" && item.scope===scope));
+  filtered.forEach(item=>{
+    const card = document.createElement("div");
+    card.className = "card "+item.scope;
+    const span = document.createElement("span");
+    span.textContent = `${item.hp==="all"?"All HP":item.hp} - ${item.scope}: ${item.value}`;
+    const btn = document.createElement("button");
+    btn.textContent = "Copy";
+    btn.onclick = ()=>{navigator.clipboard.writeText(item.value); alert("Sensitivity copied!");};
+    card.appendChild(span);
+    card.appendChild(btn);
+    cardContainer.appendChild(card);
+  });
+}
+
+// Event listener
+hpSelect.addEventListener("change", updateCards);
+scopeSelect.addEventListener("change", updateCards);
+
+// Init
+updateCards();
+</script>
+
+</body>
+</html>
